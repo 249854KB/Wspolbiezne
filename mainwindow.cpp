@@ -93,6 +93,7 @@ void MainWindow::push_users_to_table(void){
         if(users[i].active == true)
         {
             item = new QTableWidgetItem;
+            item->setTextAlignment(Qt::AlignCenter);
             sprintf(temp,"%d",i);
             item->setText(QString::fromStdString(temp));
             ui->tabelaTable->setItem(rows,0,item);
@@ -103,6 +104,7 @@ void MainWindow::push_users_to_table(void){
             ui->tabelaTable->setItem(rows,1,item);
 
             item = new QTableWidgetItem;
+            item->setTextAlignment(Qt::AlignCenter);
             sprintf(temp,"%d:%d:%d",users[i].jointime.tm_hour, users[i].jointime.tm_min, users[i].jointime.tm_sec);
             item->setText(QString::fromStdString(temp));
             ui->tabelaTable->setItem(rows,2,item);
