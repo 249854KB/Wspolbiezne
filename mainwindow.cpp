@@ -175,6 +175,7 @@ void MainWindow::setMaxProcValue(int folder, int max)
 }
 
 void MainWindow::push_users_to_table(void){
+    ui->tabelaTable->setRowCount(0);
     ui->tabelaTable->setRowCount(15);
     QTableWidgetItem *item;
     char temp[100];

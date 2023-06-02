@@ -92,6 +92,10 @@ int get_file_from_user(int id)
             else
             {
                 size_to_map = users[id].filesizes[files];
+                if(files==4)
+                {
+                    users[id].filesizes[files] = 0;
+                }
             }
         }
         float x = (size_to_map - 1) / (100000000 - 1);

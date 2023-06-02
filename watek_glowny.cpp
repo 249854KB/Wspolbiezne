@@ -18,6 +18,7 @@ void folder_task(int folder, MainWindow *w){
         shared_user_mutex.lock();
         int temp = GetHighestScoreUser();
         timer = get_file_from_user(temp);
+        w->push_users_to_table();
         shared_user_mutex.unlock();
         w->setLabel(temp,folder);
         if(temp!=100){
