@@ -4,7 +4,6 @@
 
 
 #include <thread>
-#include <mutex>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -39,12 +38,16 @@ using namespace std::chrono;
 
 int main(int argc, char *argv[])
 {
-    int folder = 1;
+    int folder = 0;
     // Calling thread with the function
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    thread folder1(folder_task,folder,&w);
+    thread folder1(folder_task,folder++,&w);
+    thread folder2(folder_task,folder++,&w);
+    thread folder3(folder_task,folder++,&w);
+    thread folder4(folder_task,folder++,&w);
+    thread folder5(folder_task,folder++,&w);
      cout << clock() << endl; // Ms from program start
 
     time_t     now = time(0);
@@ -52,7 +55,7 @@ int main(int argc, char *argv[])
     char       buf[80];
     tstruct = *localtime(&now);
     begin_time = tstruct;
-    begin_time.tm_hour = begin_time.tm_hour - 7;
+    begin_time.tm_hour = begin_time.tm_hour - 1;
     cout << tstruct.tm_hour << ":" << tstruct.tm_min << ":" << tstruct.tm_sec << endl;
     return a.exec();
 }

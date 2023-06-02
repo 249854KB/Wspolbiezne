@@ -3,38 +3,35 @@
 #include <mutex>
 #include <iostream>
 #include "watek_glowny.h"
-
+#include "global.h"
+#include <mutex>
 using namespace std;
 using namespace std::chrono;
+mutex shared_user_mutex;
 void folder_task(int folder, MainWindow *w){
 
+    int timer = 0;
     while(true)
     {
+        while(w->on ==false);   //Waiting if blocked
+        // cout << "Hejka mala" << endl;
+        shared_user_mutex.lock();
+        int temp = GetHighestScoreUser();
+        timer = get_file_from_user(temp);
+        shared_user_mutex.unlock();
+        w->setLabel(temp,folder);
+        if(temp!=100){
 
-       // cout << "Hejka mala" << endl;
-        for(int i=0; i< 100; i++)
-        {
-            w->setLabel1(0);
-        this_thread::sleep_for(milliseconds(1000));
-            w->setLabel1(1);
-            this_thread::sleep_for(milliseconds(1000));
+            w->setMaxProcValue(folder,timer);
+            for (int i = 1; i < timer; i+=100) {
+                this_thread::sleep_for(milliseconds(100));
+                w->setProcentage(folder,i);
+
+            }
         }
-    }
-}
-
-void GetHighestScoreUser()
-{
-
-}
-
-void progress_and_pick(int folder)
-{
-    while (true)
-    {
-        //shared_user_mutex.lock();
-        GetHighestScoreUser();
-       // shared_user_mutex.unlock();
-
 
     }
 }
+
+
+

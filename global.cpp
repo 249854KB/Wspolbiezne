@@ -1,4 +1,5 @@
 #include "global.h"
+#include <algorithm>
 #include <cstring>
 
 int random_files_number()
@@ -29,6 +30,7 @@ void filesgenerator(int *filesizes)
     for (int i = 0; i < random_files_number(); i++) {
         filesizes[i] =random_file_size();
     }
+    sort(filesizes,filesizes+5,greater<int>());
 
 }
 
@@ -58,4 +60,70 @@ void files_to_string(char* string, int id)
             string = strcat(string,temp1);
         }
     }
+}
+
+
+float get_time_diff(int id)
+{
+    float time_diff;
+    time_t     now = time(0);
+    struct tm  tstruct;
+    tstruct = *localtime(&now);
+    time_diff = float(tstruct.tm_hour - users[id].jointime.tm_hour) + (float)(tstruct.tm_min - users[id].jointime.tm_min)/60 + (float)(tstruct.tm_sec - users[id].jointime.tm_sec)/ 3600;
+    return time_diff;
+}
+
+int get_file_from_user(int id)
+{
+    if(id!=100)
+    {
+        int size_to_map;
+        for(int files =0; files<5; files++)
+        {
+            if(users[id].filesizes[files] == 0)
+            {
+                users[id].filesizes[files-1] = 0;
+                if(files == 1)
+                {
+                    users[id].active =false;
+                    active_count --;
+                }
+            }
+            else
+            {
+                size_to_map = users[id].filesizes[files];
+            }
+        }
+        float x = (size_to_map - 1) / (100000000 - 1);
+        return (int)(1000 + (10000 - 1000) * x);
+    }
+    return 0;
+}
+
+int GetHighestScoreUser()
+{
+    int id = 100;
+    double w =0;
+    for (int i = 0; i < 100; i++) {
+        if(users[i].active == true)
+        {
+            int filesize = 0;
+            for (int file = 0; file < 5; file++) {
+                if(users[i].filesizes[file]!=0)
+                {
+                    filesize = users[i].filesizes[file]!=0; //Getting lowest from array
+                }
+            }
+            // W = t^(1/k) + k/r
+            double tempw = pow(get_time_diff(i),1/active_count) + active_count/filesize;
+            if (tempw > w)
+            {
+                w = tempw;
+                id = i;
+            }
+
+        }
+
+    }
+    return id;
 }
